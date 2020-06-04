@@ -1,10 +1,10 @@
 import React from "react";
 import "./App.css";
 
-import { Home } from "./pages";
+import Routes from "./routes";
 
 function App() {
-  return <Home title="Home" />;
+  return <Routes />;
 }
 
 export default App;

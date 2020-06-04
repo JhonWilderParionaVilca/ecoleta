@@ -1,5 +1,6 @@
 import React from "react";
 import { FiLogIn } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 import "./Home.css";
 
@@ -9,7 +10,7 @@ interface HomeProps {
   title: String;
 }
 
-const Home: React.FC<HomeProps> = (props) => {
+const Home: React.FC<HomeProps> = () => {
   return (
     <div id="page-home">
       <div className="content">
@@ -24,12 +25,12 @@ const Home: React.FC<HomeProps> = (props) => {
             eficiente
           </p>
 
-          <a href="/register">
+          <Link to="/register">
             <span>
               <FiLogIn />
             </span>
             <strong>Registre un punto de recolección</strong>
-          </a>
+          </Link>
         </main>
       </div>
     </div>

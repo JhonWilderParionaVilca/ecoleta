@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 class PointsController {
   async create(req: Request, res: Response) {
     const trx = await knex.transaction();
-
+    // TODO: CAMBIAR NOMBRE DE UF A DEPARTAMENTOS Y CITY A PROVINCIAS
     const {
       name,
       email,
@@ -47,7 +47,7 @@ class PointsController {
       });
     } catch (error) {
       await trx.rollback();
-      return res.json({ message: error });
+      return res.status(400).json({ message: error });
     }
   }
 
