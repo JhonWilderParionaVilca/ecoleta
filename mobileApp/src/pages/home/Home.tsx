@@ -5,7 +5,6 @@ import {
   StyleSheet,
   View,
   ImageBackground,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
@@ -31,14 +30,20 @@ const Home = () => {
   const [departaments, setDepartaments] = useState<String[]>([]);
   const [provinces, setProvinces] = useState<String[]>([]);
 
+  const [textDepartament, setTextDepartament] = useState<String[]>([]);
+
   const navigation = useNavigation();
 
   const handlerNavigationToPoints = () => {
+    const nameDep = textDepartament[Number(uf) - 1];
+
     navigation.navigate("Point", {
-      uf,
+      uf: nameDep,
       city,
     });
   };
+
+  // TODO: refactor axios calls and select listing
 
   useEffect(() => {
     axios
@@ -46,13 +51,22 @@ const Home = () => {
         "http://webinei.inei.gob.pe:8080/sisconcode/ubigeo/buscarDepartamentosPorVersion.htm?llaveProyectoPK=5-1"
       )
       .then((res) => {
-        let departament = res.data.map((dep) => dep.descripcion);
+        let depName: string[] = [];
+
+        let departament = res.data.map((dep) => {
+          // const key = dep.descripcion.split(" ").shift();
+          const name = dep.descripcion.split(" ").slice(1).join(" ");
+
+          depName.push(name);
+          return dep.descripcion;
+        });
+
         setDepartaments(departament);
+        setTextDepartament(depName);
       });
   }, []);
 
   useEffect(() => {
-    console.log(uf);
     if (uf === "0") {
       return setProvinces([]);
     }
