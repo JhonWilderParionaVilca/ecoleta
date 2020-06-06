@@ -5,6 +5,7 @@
 </p>
 
 <h3 align="center">🗑️ Recolección de residuos orgánicos e inorgánicos</h3>
+<p align="center">Proyecto realizado a partir de la semana NLW #1 de <a href="https://rocketseat.com.br/">Rocketseat 🚀</a> </p> 
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/wilderPariona/ecoleta.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wilderPariona/ecoleta/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/wilderPariona/ecoleta.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wilderPariona/ecoleta/context:javascript)
@@ -26,6 +27,7 @@
 ### Dependencias
 
 1. Instalar sqlite3 en su maquina
+2. Configurar la IP local de su máquina
 
 ### Correr localmente
 
@@ -36,6 +38,11 @@
 5. Ejecute `yarn dev`
 
 ## Frontend Web
+
+### Dependencias
+
+1. La API consumida del INEI para obtener los departamentos y provincias no permite acceder localmente para solucionarlo podemos instalar CORS Unblock para [firefox](https://addons.mozilla.org/es/firefox/addon/cors-unblock/?src=search) o [Chrome](https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino)
+2. Configurar la IP local de su máquina
 
 ### Correr localmente
 
@@ -49,7 +56,7 @@
 
 1. [Instalar expo cli](https://docs.expo.io/workflow/expo-cli/#installation) en su máquina
 2. En su celular instalar el cliente de expo para [android](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www) o  [IOS](https://apps.apple.com/app/apple-store/id982107779)
-
+2. Configurar la IP local de su máquina
 
 ### Correr localmente
 
