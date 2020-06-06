@@ -23,9 +23,19 @@ interface Item {
   image_url: string;
 }
 
+interface Point {
+  id: number;
+  name: string;
+  image: string;
+  latitude: number;
+  longitude: number;
+}
+
 const Points = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState<Item[]>([]);
+  const [points, setPoints] = useState<Point[]>([]);
+
   const [initialPosition, setInitialPosition] = useState<[number, number]>([
     0,
     0,
@@ -33,27 +43,26 @@ const Points = () => {
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-  async function loadPosition() {
-    const { status } = await Location.requestPermissionsAsync();
-
-    if (status !== "granted") {
-      Alert.alert(
-        "Oooops...",
-        "Requerimos su permiso para poder obtener su localización"
-      );
-      return;
-    }
-
-    const location = await Location.getCurrentPositionAsync();
-
-    const { latitude, longitude } = location.coords;
-
-    setInitialPosition([latitude, longitude]);
-  }
-
   useEffect(() => {
+    async function loadPosition() {
+      const { status } = await Location.requestPermissionsAsync();
+
+      if (status !== "granted") {
+        Alert.alert(
+          "Oooops...",
+          "Requerimos su permiso para poder obtener su localización"
+        );
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync();
+
+      const { latitude, longitude } = location.coords;
+
+      setInitialPosition([latitude, longitude]);
+    }
     loadPosition();
-  });
+  }, []);
 
   useEffect(() => {
     api.get("/items").then((res) => {
@@ -61,12 +70,26 @@ const Points = () => {
     });
   }, []);
 
+  useEffect(() => {
+    api
+      .get("points", {
+        params: {
+          city: "Huamanga",
+          uf: "Ayacucho",
+          items: [4, 3],
+        },
+      })
+      .then((res) => {
+        setPoints(res.data);
+      });
+  }, []);
+
   const handlerNavigateBack = () => {
     navigation.goBack();
   };
 
-  const HandlerNavigateToDetail = () => {
-    navigation.navigate("Detail");
+  const HandlerNavigateToDetail = (id: number) => {
+    navigation.navigate("Detail", { point_id: id });
   };
 
   const handlerSelectedItem = (id: number) => {
@@ -87,7 +110,9 @@ const Points = () => {
           <Icon name="arrow-left" size={20} color="#34cb79" />
         </TouchableOpacity>
         <Text style={styles.title}>Bienvenido</Text>
-        <Text style={styles.description}>Seleccione unos items</Text>
+        <Text style={styles.description}>
+          Selecciones un punto de recolección
+        </Text>
 
         <View style={styles.mapContainer}>
           {initialPosition[0] !== 0 && (
@@ -97,29 +122,31 @@ const Points = () => {
               initialRegion={{
                 latitude: initialPosition[0],
                 longitude: initialPosition[1],
-                latitudeDelta: 0.0014,
-                longitudeDelta: 0.0014,
+                latitudeDelta: 0.014,
+                longitudeDelta: 0.014,
               }}
             >
-              <Marker
-                onPress={HandlerNavigateToDetail}
-                style={styles.mapMarker}
-                coordinate={{
-                  latitude: initialPosition[0],
-                  longitude: initialPosition[1],
-                }}
-              >
-                <View style={styles.mapMarkerContainer}>
-                  <Image
-                    style={styles.mapMarkerImage}
-                    source={{
-                      uri:
-                        "https://images.unsplash.com/photo-1571441249554-21a423c0d2b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60",
-                    }}
-                  />
-                  <Text style={styles.mapMarkerTitle}>La coleta</Text>
-                </View>
-              </Marker>
+              {points.map((point) => (
+                <Marker
+                  key={String(point.id)}
+                  onPress={() => HandlerNavigateToDetail(point.id)}
+                  style={styles.mapMarker}
+                  coordinate={{
+                    latitude: point.latitude,
+                    longitude: point.longitude,
+                  }}
+                >
+                  <View style={styles.mapMarkerContainer}>
+                    <Image
+                      style={styles.mapMarkerImage}
+                      source={{
+                        uri: point.image,
+                      }}
+                    />
+                    <Text style={styles.mapMarkerTitle}>{point.name}</Text>
+                  </View>
+                </Marker>
+              ))}
             </MapView>
           )}
         </View>

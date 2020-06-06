@@ -17,7 +17,8 @@ class PointsController {
     } = req.body;
 
     const point = {
-      image: "image example",
+      image:
+        "https://images.unsplash.com/photo-1571441249554-21a423c0d2b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60",
       name,
       email,
       whatsapp,
