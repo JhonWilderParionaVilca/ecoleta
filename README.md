@@ -43,7 +43,7 @@
 2. Ejecute `yarn install` o `npm install`
 3. Ejecute `yarn start`
 
-## Frontend Web
+## Frontend Mobile
 
 ### Dependencias
 
