@@ -1,48 +1,87 @@
-import React from "react";
-import { Text, Image, StyleSheet, View, ImageBackground } from "react-native";
+import React, { useState } from "react";
+import {
+  Text,
+  Image,
+  StyleSheet,
+  View,
+  ImageBackground,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { Feather as Icon } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const Home = () => {
+  const [uf, setUf] = useState("");
+  const [city, setCity] = useState("");
+
   const navigation = useNavigation();
 
   const handlerNavigationToPoints = () => {
-    navigation.navigate("Point");
+    navigation.navigate("Point", {
+      uf,
+      city,
+    });
   };
 
   return (
-    <ImageBackground
-      source={require("../../assets/home-background.png")}
-      style={styles.container}
-      imageStyle={{
-        width: 274,
-        height: 368,
-      }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <View style={styles.main}>
-        <Image source={require("../../assets/logo.png")} />
-        <Text style={styles.title}>
-          Su marketplace de recolección de residuos
-        </Text>
-        <Text style={styles.description}>
-          Ayudamos a personas a encontrar puntos de recolección de forma
-          eficiente
-        </Text>
-      </View>
-
-      <View style={styles.footer}>
-        <RectButton style={styles.button} onPress={handlerNavigationToPoints}>
-          <View style={styles.buttonIcon}>
-            <Text>
-              <Icon name="arrow-right" color="#fff" size={24} />
+      <ImageBackground
+        source={require("../../assets/home-background.png")}
+        style={styles.container}
+        imageStyle={{
+          width: 274,
+          height: 368,
+        }}
+      >
+        <View style={styles.main}>
+          <Image source={require("../../assets/logo.png")} />
+          <View>
+            <Text style={styles.title}>
+              Su marketplace de recolección de residuos
+            </Text>
+            <Text style={styles.description}>
+              Ayudamos a personas a encontrar puntos de recolección de forma
+              eficiente
             </Text>
           </View>
+        </View>
 
-          <Text style={styles.buttonText}>Entrar</Text>
-        </RectButton>
-      </View>
-    </ImageBackground>
+        <View style={styles.footer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Seleccione un departamento"
+            value={uf}
+            onChangeText={setUf}
+            autoCapitalize="sentences"
+            autoCorrect={false}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Seleccione una provincia"
+            value={city}
+            onChangeText={setCity}
+            autoCorrect={false}
+            autoCapitalize="sentences"
+          />
+
+          <RectButton style={styles.button} onPress={handlerNavigationToPoints}>
+            <View style={styles.buttonIcon}>
+              <Text>
+                <Icon name="arrow-right" color="#fff" size={24} />
+              </Text>
+            </View>
+
+            <Text style={styles.buttonText}>Entrar</Text>
+          </RectButton>
+        </View>
+      </ImageBackground>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -59,16 +98,16 @@ const styles = StyleSheet.create({
 
   title: {
     color: "#322153",
-    fontSize: 32,
+    fontSize: 25,
     fontFamily: "Ubuntu_700Bold",
     maxWidth: 260,
-    marginTop: 64,
+    marginTop: 48,
   },
 
   description: {
     color: "#6C6C80",
-    fontSize: 16,
-    marginTop: 16,
+    fontSize: 13,
+    marginTop: 8,
     fontFamily: "Roboto_400Regular",
     maxWidth: 260,
     lineHeight: 24,
@@ -114,5 +153,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
 export default Home;
