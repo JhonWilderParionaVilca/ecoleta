@@ -40,6 +40,8 @@
 4. Ejecute `yarn knex:seed`
 5. Ejecute `yarn dev`
 
+![Backend](https://raw.githubusercontent.com/jhonPariona/images/master/nexlewveweek/primero.gif)
+
 ## Frontend Web
 
 ### Dependencias
@@ -52,6 +54,8 @@
 1. Entre a la carpeta web
 2. Ejecute `yarn install` o `npm install`
 3. Ejecute `yarn start`
+
+![web](https://raw.githubusercontent.com/jhonPariona/images/master/nexlewveweek/web%20prueba.gif)
 
 ## Frontend Mobile
 
@@ -69,6 +73,9 @@
 4. Espere a que cargue el código QR
 5. Escanee el codigo QR con el cliente de expo
 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/jhonPariona/images/master/nexlewveweek/mobile.gif" alt="ecoleta mobile">
+</p>
 
 ## CONTRIBUTORS ✨
 
