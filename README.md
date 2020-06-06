@@ -13,6 +13,9 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/wilderPariona/ecoleta/badge.svg)](https://snyk.io/test/github/wilderPariona/ecoleta)
 
 
+
+<img src="https://raw.githubusercontent.com/jhonPariona/images/master/nexlewveweek/2560x1080.jpg" alt="NLW logo">
+
 ## Backend API-REST
 
 
