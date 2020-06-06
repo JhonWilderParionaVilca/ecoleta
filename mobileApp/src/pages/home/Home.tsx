@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   Image,
@@ -12,10 +12,24 @@ import {
 import { RectButton } from "react-native-gesture-handler";
 import { Feather as Icon } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import RNPickerSelect from "react-native-picker-select";
+
+// interface
+interface DepartamentResponse {
+  descripcion: string;
+}
+
+interface ProvinciaResponse {
+  descripcion: string;
+}
 
 const Home = () => {
   const [uf, setUf] = useState("");
   const [city, setCity] = useState("");
+
+  const [departaments, setDepartaments] = useState<String[]>([]);
+  const [provinces, setProvinces] = useState<String[]>([]);
 
   const navigation = useNavigation();
 
@@ -25,6 +39,33 @@ const Home = () => {
       city,
     });
   };
+
+  useEffect(() => {
+    axios
+      .get<DepartamentResponse[]>(
+        "http://webinei.inei.gob.pe:8080/sisconcode/ubigeo/buscarDepartamentosPorVersion.htm?llaveProyectoPK=5-1"
+      )
+      .then((res) => {
+        let departament = res.data.map((dep) => dep.descripcion);
+        setDepartaments(departament);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log(uf);
+    if (uf === "0") {
+      return setProvinces([]);
+    }
+
+    axios
+      .get<ProvinciaResponse[]>(
+        `http://webinei.inei.gob.pe:8080/sisconcode/ubigeo/buscarProvinciasPorVersion.htm?llaveProyectoPK=5-1&departamentoId=${uf}`
+      )
+      .then((res) => {
+        const province = res.data.map((prov) => prov.descripcion);
+        setProvinces(province);
+      });
+  }, [uf]);
 
   return (
     <KeyboardAvoidingView
@@ -53,21 +94,38 @@ const Home = () => {
         </View>
 
         <View style={styles.footer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Seleccione un departamento"
-            value={uf}
-            onChangeText={setUf}
-            autoCapitalize="sentences"
-            autoCorrect={false}
+          <RNPickerSelect
+            onValueChange={(value) => {
+              setUf(value);
+            }}
+            placeholder={{
+              label: "Seleccione un departamento",
+              value: "0",
+              color: "#9EA0A4",
+            }}
+            items={departaments.map((dep) => ({
+              key: String(dep.split(" ").slice(1).join(" ")),
+              label: String(dep.split(" ").slice(1).join(" ")),
+              value: dep.split(" ").shift(),
+            }))}
+            style={styleSelect}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Seleccione una provincia"
-            value={city}
-            onChangeText={setCity}
-            autoCorrect={false}
-            autoCapitalize="sentences"
+
+          <RNPickerSelect
+            onValueChange={(value) => {
+              setCity(value);
+            }}
+            placeholder={{
+              label: "Seleccione una provincia",
+              value: "0",
+              color: "#9EA0A4",
+            }}
+            items={provinces.map((prov) => ({
+              key: String(prov.split(" ").slice(1).join(" ")),
+              label: String(prov.split(" ").slice(1).join(" ")),
+              value: String(prov.split(" ").slice(1).join(" ")),
+            }))}
+            style={styleSelect}
           />
 
           <RectButton style={styles.button} onPress={handlerNavigationToPoints}>
@@ -84,6 +142,25 @@ const Home = () => {
     </KeyboardAvoidingView>
   );
 };
+
+const styleSelect = StyleSheet.create({
+  inputAndroid: {
+    height: 60,
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    marginBottom: 8,
+    paddingHorizontal: 24,
+    fontSize: 16,
+  },
+  inputIOS: {
+    height: 60,
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    marginBottom: 8,
+    paddingHorizontal: 24,
+    fontSize: 16,
+  },
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -116,15 +193,6 @@ const styles = StyleSheet.create({
   footer: {},
 
   select: {},
-
-  input: {
-    height: 60,
-    backgroundColor: "#FFF",
-    borderRadius: 10,
-    marginBottom: 8,
-    paddingHorizontal: 24,
-    fontSize: 16,
-  },
 
   button: {
     backgroundColor: "#34CB79",
