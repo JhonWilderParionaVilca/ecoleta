@@ -55,6 +55,8 @@
 2. Ejecute `yarn install` o `npm install`
 3. Ejecute `yarn start`
 
+![web](https://raw.githubusercontent.com/jhonPariona/images/master/nexlewveweek/web%20prueba.gif)
+
 ## Frontend Mobile
 
 ### Dependencias
