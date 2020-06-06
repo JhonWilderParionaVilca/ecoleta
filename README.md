@@ -73,6 +73,9 @@
 4. Espere a que cargue el código QR
 5. Escanee el codigo QR con el cliente de expo
 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/jhonPariona/images/master/nexlewveweek/mobile.gif" alt="ecoleta mobile">
+</p>
 
 ## CONTRIBUTORS ✨
 
