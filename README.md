@@ -40,6 +40,8 @@
 4. Ejecute `yarn knex:seed`
 5. Ejecute `yarn dev`
 
+![Backend](https://raw.githubusercontent.com/jhonPariona/images/master/nexlewveweek/primero.gif)
+
 ## Frontend Web
 
 ### Dependencias
