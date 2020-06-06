@@ -3,11 +3,12 @@ import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { Map, TileLayer, Marker } from "react-leaflet";
 import { LeafletMouseEvent } from "leaflet";
+import axios from "axios";
 
 import logo from "../../assets/logo.svg";
 
 import api from "../../services/api";
-import axios from "axios";
+import { Dropzone } from "../../components";
 
 import "./CreatePoint.css";
 
@@ -43,6 +44,7 @@ const RegisterPoint = () => {
     [number, number]
   >([0, 0]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -137,16 +139,20 @@ const RegisterPoint = () => {
     const [latitude, longitude] = selectedMapPosition;
     const items = selectedItems;
 
-    const data = {
-      name: name.trim(),
-      email: email.trim(),
-      whatsapp: whatsapp.trim(),
-      uf,
-      city: city.trim(),
-      latitude,
-      longitude,
-      items,
-    };
+    const data = new FormData();
+
+    data.append("name", name.trim());
+    data.append("email", email.trim());
+    data.append("whatsapp", whatsapp.trim());
+    data.append("uf", uf);
+    data.append("city", city.trim());
+    data.append("latitude", String(latitude));
+    data.append("longitude", String(longitude));
+    data.append("items", items.join(","));
+
+    if (selectedFile) {
+      data.append("image", selectedFile);
+    }
 
     try {
       await api.post("/points", data);
@@ -171,6 +177,8 @@ const RegisterPoint = () => {
 
       <form onSubmit={handlerSubmit}>
         <h1>Registro de un punto de recolección</h1>
+
+        <Dropzone onFileUploaded={setSelectedFile} />
 
         <fieldset>
           <legend>
