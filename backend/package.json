@@ -17,7 +17,7 @@
     "knex": "^0.21.1",
     "multer": "^1.4.2",
     "snyk": "^1.334.0",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^5.0.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",
